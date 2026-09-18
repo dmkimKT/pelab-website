@@ -276,6 +276,19 @@ footer .fine a{color:var(--steel)}
 .flinks{display:grid;gap:8px;font-size:14.5px;align-content:start}
 .flinks a{color:var(--steel);display:inline-flex;gap:8px;align-items:center}
 .flinks svg{width:15px;height:15px;color:var(--ink-3)}
+
+/* photos */
+img.portrait{object-fit:cover;padding:0;display:block;background:var(--surface-2)}
+.member{grid-template-columns:64px 1fr}
+.avatar{width:64px;height:64px}
+img.avatar{object-fit:cover;display:block}
+.area{overflow:hidden}
+.area-img{display:block;width:calc(100% + 48px);max-width:none;margin:-24px -24px 0;aspect-ratio:16/9;object-fit:cover;border-bottom:1px solid var(--line-2)}
+.overview{margin:0 0 20px;background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:12px;display:grid;gap:10px}
+.overview img{display:block;width:100%;height:auto;border-radius:6px}
+.overview figcaption{font-size:13.5px;color:var(--ink-3);text-align:center}
+#notice{position:relative;background:linear-gradient(rgba(12,18,26,.78),rgba(12,18,26,.78)),url("img/campus.jpg") center/cover no-repeat;border-bottom:0}
+#notice .notice-card,#notice .contact{box-shadow:0 12px 40px -16px rgba(0,0,0,.6)}
 </style>
 </head>
 <body>
@@ -312,12 +325,6 @@ footer .fine a{color:var(--steel)}
       <h1>Koreatech<br>Power Electronics <span>Lab</span></h1>
       <p class="sub">High-efficiency, high-density power conversion for data centers, electric vehicles, aerospace, defense, and wireless power transfer — from MHz resonant converters to server-rack power architectures.</p>
       <p class="kr">한국기술교육대학교 전력전자연구실</p>
-      <div class="hero-stats" aria-label="At a glance">
-        <div class="stat"><b>5</b><span>Research areas</span></div>
-        <div class="stat"><b>23</b><span>Publications</span></div>
-        <div class="stat"><b>7</b><span>Sponsored projects</span></div>
-        <div class="stat"><b>F310</b><span>Eng. Bldg. #1</span></div>
-      </div>
     </div>
     <div class="scope" aria-hidden="true">
       <canvas id="scope"></canvas>
@@ -366,7 +373,7 @@ footer .fine a{color:var(--steel)}
 
     <article class="prof">
       <div class="prof-id">
-        <div class="portrait"><span>PHOTO · 김동민 교수</span></div>
+        <img class="portrait" src="img/prof-dongmin-kim.jpg" alt="Dongmin Kim" width="560" height="800">
         <div>
           <div class="eyebrow">Professor</div>
           <h3>Dongmin Kim, Ph.D.</h3>
@@ -403,7 +410,7 @@ footer .fine a{color:var(--steel)}
     </div>
     <div class="grid-3">
       <div class="member">
-        <div class="avatar" aria-hidden="true">백</div>
+        <img class="avatar" src="img/member-baek.jpg" alt="백선우">
         <div>
           <h4>백선우 <small>Seonwoo Baek</small></h4>
           <div class="deg">Undergraduate researcher</div>
@@ -412,7 +419,7 @@ footer .fine a{color:var(--steel)}
         </div>
       </div>
       <div class="member">
-        <div class="avatar" aria-hidden="true">조</div>
+        <img class="avatar" src="img/member-cho.jpg" alt="조창근">
         <div>
           <h4>조창근 <small>Chang-geun Cho</small></h4>
           <div class="deg">Undergraduate researcher</div>
@@ -421,7 +428,7 @@ footer .fine a{color:var(--steel)}
         </div>
       </div>
       <div class="member">
-        <div class="avatar" aria-hidden="true">한</div>
+        <img class="avatar" src="img/member-han.jpg" alt="한재상">
         <div>
           <h4>한재상 <small>Jae-sang Han</small></h4>
           <div class="deg">Undergraduate researcher</div>
@@ -443,33 +450,34 @@ footer .fine a{color:var(--steel)}
       </div>
       <p>Power conversion where efficiency, density and reliability are all non-negotiable.</p>
     </div>
+    <figure class="overview"><img src="img/research-overview.jpg" alt="PELab research overview: data center, wireless power, EV and aerospace power converters" width="1000" height="425"><figcaption>Power converters developed across the lab's application domains — data center PSUs, MHz wireless power, EV converters, and aerospace power systems.</figcaption></figure>
     <div class="areas">
       <article class="area">
-        <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="5" rx="1"/><rect x="3" y="10" width="18" height="5" rx="1"/><rect x="3" y="16" width="18" height="5" rx="1"/><path d="M7 6.5h.01M7 12.5h.01M7 18.5h.01"/></svg></div>
+        <img class="area-img" src="img/area-datacenter.jpg" alt="" loading="lazy">
         <h3>Datacenter</h3>
         <p>Advanced power electronics for high-efficiency, high-density, and reliable data center energy systems.</p>
         <div class="kw"><span>Titanium 1U PSU</span><span>Liquid cooling</span><span>Bridgeless PFC</span></div>
       </article>
       <article class="area">
-        <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 13l2-5h12l3 5v4H3z"/><circle cx="7.5" cy="17" r="1.8"/><circle cx="16.5" cy="17" r="1.8"/><path d="M12 8v5M9 3l3-1 3 1"/></svg></div>
+        <img class="area-img" src="img/area-ev.jpg" alt="" loading="lazy">
         <h3>Electric Vehicle</h3>
         <p>Innovative power conversion and charging technologies for efficient and sustainable electric vehicles.</p>
         <div class="kw"><span>LDC</span><span>Bidirectional APM</span><span>Wide input range</span></div>
       </article>
       <article class="area">
-        <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3c1.5 2.5 2 5 2 8l6 4v2l-6-1.5v3l2 1.5V21l-4-1-4 1v-1l2-1.5v-3L4 17v-2l6-4c0-3 .5-5.5 2-8Z"/></svg></div>
+        <img class="area-img" src="img/area-aerospace.jpg" alt="" loading="lazy">
         <h3>Aerospace</h3>
         <p>Lightweight and high-reliability power electronics for aerospace propulsion and onboard energy systems.</p>
         <div class="kw"><span>High power density</span><span>Reliability</span></div>
       </article>
       <article class="area">
-        <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3 4 6v6c0 4.5 3.5 8 8 9 4.5-1 8-4.5 8-9V6l-8-3Z"/><path d="m9 12 2 2 4-4"/></svg></div>
+        <img class="area-img" src="img/area-defense.jpg" alt="" loading="lazy">
         <h3>Military &amp; Defense</h3>
         <p>Ruggedized power electronic systems for defense applications requiring high reliability and resilience.</p>
         <div class="kw"><span>HV pulse generator</span><span>Multi-channel sync</span></div>
       </article>
       <article class="area">
-        <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20V10"/><circle cx="12" cy="8" r="1.4"/><path d="M8.5 4.5a5 5 0 0 1 7 0M6 2a8.5 8.5 0 0 1 12 0M8.5 11.5a5 5 0 0 0 7 0"/></svg></div>
+        <img class="area-img" src="img/area-wpt.jpg" alt="" loading="lazy">
         <h3>Wireless Power Transfer</h3>
         <p>Advanced wireless power transfer technologies for stable, efficient, and flexible energy delivery systems.</p>
         <div class="kw"><span>MHz Class E / Φ2</span><span>Dual-band rectifier</span><span>Rx integration</span></div>
