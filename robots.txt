@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://pelab-website.vercel.app/sitemap.xml
