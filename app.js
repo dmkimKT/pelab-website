@@ -33,7 +33,11 @@
   var saved='all'; try{saved=localStorage.getItem(KEY)||'all';}catch(e){}
   applyFilter(saved);
 
-  /* ---- hero oscilloscope: gate drive + resonant tank current ---- */
+  /* ---- hero oscilloscope: buck converter, slow duty sweep ----
+     v_sw : PWM switch-node voltage (0 / Vin), duty D(t) sweeps 30 % -> 70 % -> 30 %
+     i_L  : inductor current, triangular, avg = D*Vin/R, ripple ~ D(1-D)   (ideal CCM)
+     v_o  : output voltage, DC = D*Vin with small parabolic ripple (magnified)
+     All three traces share one time axis and the same instantaneous duty. */
   var cv=document.getElementById('scope'),ctx=cv.getContext('2d');
   var reduce=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   var W,H,dpr;
@@ -44,9 +48,15 @@
   }
   function tok(n){return getComputedStyle(document.documentElement).getPropertyValue(n).trim();}
   var t0=performance.now();
+  var PERIODS=4, SWEEP=10, DMIN=0.3, DMAX=0.7;
+  function lane(a,b){return {top:H*a,bot:H*b,y:function(v){return H*b-(H*(b-a))*v;}};}
+  function frac(x){return x-Math.floor(x);}
+  /* per-period waveforms, normalised 0..1 inside each lane */
+  function iL(p,D){ var tri=p<D?(-1+2*p/D):(1-2*(p-D)/(1-D)); return D+0.85*D*(1-D)*tri; }
+  function vO(p,D){ var z=p-D, q=p<D?(-p+p*p/D):(z-z*z/(1-D)); var qm=(1-2*D)/6; return D+0.32*D*(1-D)*(q-qm)*8; }
   function draw(now){
-    var t=reduce?0:(now-t0)/1000;
-    var steel=tok('--steel'),copper=tok('--copper'),grid=tok('--line-2'),ink3=tok('--ink-3');
+    var t=reduce?SWEEP/4:(now-t0)/1000;
+    var steel=tok('--steel'),copper=tok('--copper'),green=tok('--trace3')||'#2E7D6B',grid=tok('--line-2'),ink3=tok('--ink-3');
     ctx.clearRect(0,0,W,H);
     /* graticule */
     ctx.strokeStyle=grid; ctx.lineWidth=1;
@@ -55,34 +65,37 @@
     for(var i=1;i<10;i++){ctx.moveTo(i*gx+.5,0);ctx.lineTo(i*gx+.5,H);}
     for(var j=1;j<8;j++){ctx.moveTo(0,j*gy+.5);ctx.lineTo(W,j*gy+.5);}
     ctx.stroke();
-    ctx.strokeStyle=ink3; ctx.globalAlpha=.35;
-    ctx.beginPath(); ctx.moveTo(0,H/2+.5); ctx.lineTo(W,H/2+.5); ctx.stroke(); ctx.globalAlpha=1;
-
-    var periods=3, phase=t*0.9;
-    /* gate drive: 50% duty square wave */
+    var D=(DMIN+DMAX)/2+(DMAX-DMIN)/2*Math.sin(2*Math.PI*t/SWEEP);
+    var phase=t*0.85;
+    var Lsw=lane(0.13,0.31), Li=lane(0.38,0.66), Lo=lane(0.73,0.93);
+    /* faint baselines for each lane */
+    ctx.strokeStyle=ink3; ctx.globalAlpha=.3; ctx.beginPath();
+    [Lsw.bot,Li.bot,Lo.bot].forEach(function(y){ctx.moveTo(0,Math.round(y)+.5);ctx.lineTo(W,Math.round(y)+.5);});
+    ctx.stroke(); ctx.globalAlpha=1;
+    /* v_sw: PWM with exact edges */
     ctx.strokeStyle=steel; ctx.lineWidth=1.6; ctx.beginPath();
-    var hi=H*0.22, lo=H*0.42;
-    for(var x=0;x<=W;x++){
-      var u=(x/W)*periods+phase/(2*Math.PI);
-      var s=(u%1)<0.5?hi:lo;
-      if(x===0)ctx.moveTo(x,s); else ctx.lineTo(x,s);
+    var u0=phase, u1=phase+PERIODS, xOf=function(u){return (u-u0)/PERIODS*W;};
+    var v=frac(u0)<D?1:0; ctx.moveTo(0,Lsw.y(v));
+    for(var k=Math.floor(u0);k<=Math.ceil(u1);k++){
+      var edges=[[k,1],[k+D,0]];
+      for(var e=0;e<2;e++){ var u=edges[e][0],nv=edges[e][1]; if(u<=u0||u>=u1)continue; var x=xOf(u); ctx.lineTo(x,Lsw.y(v)); ctx.lineTo(x,Lsw.y(nv)); v=nv; }
     }
-    ctx.stroke();
-    /* resonant current: sine with gentle amplitude envelope (light-load morphing) */
-    var env=0.32+0.08*Math.sin(t*0.5);
+    ctx.lineTo(W,Lsw.y(v)); ctx.stroke();
+    /* i_L and v_o, sampled per pixel plus exact vertices */
+    var xs=[]; for(var px=0;px<=W;px+=1.5)xs.push(u0+px/W*PERIODS);
+    for(var k2=Math.floor(u0);k2<=Math.ceil(u1);k2++){[k2,k2+D/2,k2+D,k2+D+(1-D)/2].forEach(function(u){if(u>u0&&u<u1)xs.push(u);});}
+    xs.sort(function(a,b){return a-b;});
     ctx.strokeStyle=copper; ctx.lineWidth=2; ctx.beginPath();
-    for(var x2=0;x2<=W;x2++){
-      var th=(x2/W)*periods*2*Math.PI+phase;
-      var y=H*0.68 - Math.sin(th)*H*env*0.5;
-      if(x2===0)ctx.moveTo(x2,y); else ctx.lineTo(x2,y);
-    }
+    for(var a=0;a<xs.length;a++){var ua=xs[a],ya=Li.y(iL(frac(ua),D)); if(a===0)ctx.moveTo(xOf(ua),ya); else ctx.lineTo(xOf(ua),ya);}
     ctx.stroke();
-    /* ZVS marker dots at the i_Lr zero crossings */
-    ctx.fillStyle=copper;
-    for(var k=0;k<periods*2;k++){
-      var xs=((k*Math.PI-phase)/(periods*2*Math.PI))*W; while(xs<0)xs+=W/periods; xs=xs%W;
-      ctx.beginPath(); ctx.arc(xs,H*0.68,2.6,0,Math.PI*2); ctx.fill();
-    }
+    ctx.strokeStyle=green; ctx.lineWidth=2; ctx.beginPath();
+    for(var b=0;b<xs.length;b++){var ub=xs[b],yb=Lo.y(vO(frac(ub),D)); if(b===0)ctx.moveTo(xOf(ub),yb); else ctx.lineTo(xOf(ub),yb);}
+    ctx.stroke();
+    /* dashed average / DC level markers */
+    ctx.setLineDash([3,6]); ctx.globalAlpha=.45; ctx.lineWidth=1;
+    ctx.strokeStyle=copper; ctx.beginPath(); ctx.moveTo(0,Li.y(D)+.5); ctx.lineTo(W,Li.y(D)+.5); ctx.stroke();
+    ctx.strokeStyle=green; ctx.beginPath(); ctx.moveTo(0,Lo.y(D)+.5); ctx.lineTo(W,Lo.y(D)+.5); ctx.stroke();
+    ctx.setLineDash([]); ctx.globalAlpha=1;
     if(!reduce) requestAnimationFrame(draw);
   }
   size(); requestAnimationFrame(draw);

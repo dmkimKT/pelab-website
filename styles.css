@@ -11,6 +11,7 @@
   --copper-soft:#F3E3D6;
   --steel:#2E5A86;
   --steel-soft:#DDE7F1;
+  --trace3:#2E7D6B;
   --grid:rgba(21,33,49,.06);
   --shadow:0 1px 2px rgba(21,33,49,.06),0 8px 24px -12px rgba(21,33,49,.18);
   --display:"Sora","Noto Sans KR",system-ui,sans-serif;
@@ -24,7 +25,7 @@
     --ink:#E7ECF2; --ink-2:#AEBAC7; --ink-3:#7E8B99;
     --line:#2B3744; --line-2:#222D39;
     --copper:#D98C55; --copper-soft:#3A2A1E;
-    --steel:#7FAAD6; --steel-soft:#1D2E41;
+    --steel:#7FAAD6; --steel-soft:#1D2E41; --trace3:#6FBFA8;
     --grid:rgba(231,236,242,.06);
     --shadow:0 1px 2px rgba(0,0,0,.4),0 8px 24px -12px rgba(0,0,0,.6);
     color-scheme:dark;
@@ -35,7 +36,7 @@
   --ink:#E7ECF2; --ink-2:#AEBAC7; --ink-3:#7E8B99;
   --line:#2B3744; --line-2:#222D39;
   --copper:#D98C55; --copper-soft:#3A2A1E;
-  --steel:#7FAAD6; --steel-soft:#1D2E41;
+  --steel:#7FAAD6; --steel-soft:#1D2E41; --trace3:#6FBFA8;
   --grid:rgba(231,236,242,.06);
   --shadow:0 1px 2px rgba(0,0,0,.4),0 8px 24px -12px rgba(0,0,0,.6);
   color-scheme:dark;
@@ -277,6 +278,7 @@ img.avatar{object-fit:cover;object-position:center top;display:block;border:1px 
 /* former inline styles */
 .sw-steel{background:var(--steel)}
 .sw-copper{background:var(--copper)}
+.sw-green{background:var(--trace3)}
 .brand-foot{margin-bottom:12px}
 .col-no{width:44px}
 .td-no{color:var(--ink-3)}
