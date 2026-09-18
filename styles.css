@@ -256,8 +256,8 @@ td.p{font-family:var(--mono);font-size:13px;color:var(--ink-2);white-space:nowra
 /* footer */
 footer{background:var(--surface);border-top:1px solid var(--line)}
 footer .wrap{display:grid;gap:24px;padding-block:40px 32px}
-@media(min-width:800px){footer .wrap{grid-template-columns:1.2fr .8fr}}
-footer .addr{color:var(--ink-2);font-size:14.5px;line-height:1.7;max-width:52ch}
+@media(min-width:800px){footer .wrap{grid-template-columns:minmax(0,1fr) auto;gap:24px 48px}}
+footer .addr{color:var(--ink-2);font-size:14.5px;line-height:1.7}
 footer .fine{display:flex;flex-wrap:wrap;gap:8px 20px;font-family:var(--mono);font-size:12px;color:var(--ink-3);grid-column:1/-1;border-top:1px solid var(--line-2);padding-top:18px}
 footer .fine a{color:var(--steel)}
 .flinks{display:grid;gap:8px;font-size:14.5px;align-content:start}
