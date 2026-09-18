@@ -278,15 +278,13 @@ footer .fine a{color:var(--steel)}
 .flinks svg{width:15px;height:15px;color:var(--ink-3)}
 
 /* photos */
-img.portrait{object-fit:cover;padding:0;display:block;background:var(--surface-2)}
+img.portrait{width:160px;max-width:160px;height:auto;aspect-ratio:7/10;object-fit:cover;padding:0;display:block;background:var(--surface-2)}
+@media(min-width:840px){.prof{grid-template-columns:200px 1fr}}
 .member{grid-template-columns:104px 1fr;gap:18px}
 .avatar{width:104px;height:136px;border-radius:10px}
 img.avatar{object-fit:cover;object-position:center top;display:block;border:1px solid var(--line-2)}
 .area{overflow:hidden}
 .area-img{display:block;width:calc(100% + 48px);max-width:none;margin:-24px -24px 0;aspect-ratio:16/9;object-fit:cover;border-bottom:1px solid var(--line-2)}
-.overview{margin:0 0 20px;background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:12px;display:grid;gap:10px}
-.overview img{display:block;width:100%;height:auto;border-radius:6px}
-.overview figcaption{font-size:13.5px;color:var(--ink-3);text-align:center}
 #notice{position:relative;background:linear-gradient(rgba(12,18,26,.78),rgba(12,18,26,.78)),url("img/campus.jpg") center/cover no-repeat;border-bottom:0}
 #notice .notice-card,#notice .contact{box-shadow:0 12px 40px -16px rgba(0,0,0,.6)}
 </style>
@@ -373,7 +371,7 @@ img.avatar{object-fit:cover;object-position:center top;display:block;border:1px 
 
     <article class="prof">
       <div class="prof-id">
-        <img class="portrait" src="img/prof-dongmin-kim.jpg" alt="Dongmin Kim" width="560" height="800">
+        <img class="portrait" src="img/prof-dongmin-kim.jpg" alt="Dongmin Kim">
         <div>
           <div class="eyebrow">Professor</div>
           <h3>Dongmin Kim, Ph.D.</h3>
@@ -450,7 +448,6 @@ img.avatar{object-fit:cover;object-position:center top;display:block;border:1px 
       </div>
       <p>Power conversion where efficiency, density and reliability are all non-negotiable.</p>
     </div>
-    <figure class="overview"><img src="img/research-overview.jpg" alt="PELab research overview: data center, wireless power, EV and aerospace power converters" width="1000" height="425"><figcaption>Power converters developed across the lab's application domains — data center PSUs, MHz wireless power, EV converters, and aerospace power systems.</figcaption></figure>
     <div class="areas">
       <article class="area">
         <img class="area-img" src="img/area-datacenter.jpg" alt="" loading="lazy">
