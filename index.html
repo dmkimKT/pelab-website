@@ -1,0 +1,690 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="Koreatech Power Electronics Lab (PELab) — 한국기술교육대학교 전력전자연구실. High-efficiency, high-density power conversion for data centers, EVs, aerospace, defense and wireless power transfer.">
+<meta property="og:title" content="Koreatech Power Electronics Lab (PELab)">
+<meta property="og:description" content="한국기술교육대학교 전력전자연구실 — 김동민 교수 연구실">
+<meta property="og:type" content="website">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 28 28' fill='none'%3E%3Crect x='1.5' y='1.5' width='25' height='25' rx='5' stroke='%23B5602A' stroke-width='1.6'/%3E%3Cpath d='M5 17.5h4l2.5-8 3 12 2.5-8h6' stroke='%23B5602A' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<title>Koreatech PELab</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sora:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&family=Noto+Sans+KR:wght@400;500;700&display=swap">
+<style>
+:root{
+  --bg:#F4F6F8;
+  --surface:#FFFFFF;
+  --surface-2:#E9EDF1;
+  --ink:#152131;
+  --ink-2:#4A5868;
+  --ink-3:#7B8794;
+  --line:#D3DAE2;
+  --line-2:#E4E9EE;
+  --copper:#B5602A;
+  --copper-soft:#F3E3D6;
+  --steel:#2E5A86;
+  --steel-soft:#DDE7F1;
+  --grid:rgba(21,33,49,.06);
+  --shadow:0 1px 2px rgba(21,33,49,.06),0 8px 24px -12px rgba(21,33,49,.18);
+  --display:"Sora","Noto Sans KR",system-ui,sans-serif;
+  --body:"IBM Plex Sans","Noto Sans KR",system-ui,sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+  color-scheme:light;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --bg:#0E141C; --surface:#151D27; --surface-2:#1C2733;
+    --ink:#E7ECF2; --ink-2:#AEBAC7; --ink-3:#7E8B99;
+    --line:#2B3744; --line-2:#222D39;
+    --copper:#D98C55; --copper-soft:#3A2A1E;
+    --steel:#7FAAD6; --steel-soft:#1D2E41;
+    --grid:rgba(231,236,242,.06);
+    --shadow:0 1px 2px rgba(0,0,0,.4),0 8px 24px -12px rgba(0,0,0,.6);
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0E141C; --surface:#151D27; --surface-2:#1C2733;
+  --ink:#E7ECF2; --ink-2:#AEBAC7; --ink-3:#7E8B99;
+  --line:#2B3744; --line-2:#222D39;
+  --copper:#D98C55; --copper-soft:#3A2A1E;
+  --steel:#7FAAD6; --steel-soft:#1D2E41;
+  --grid:rgba(231,236,242,.06);
+  --shadow:0 1px 2px rgba(0,0,0,.4),0 8px 24px -12px rgba(0,0,0,.6);
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:76px}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+body{
+  margin:0;background:var(--bg);color:var(--ink);
+  font-family:var(--body);font-size:16px;line-height:1.6;
+  -webkit-font-smoothing:antialiased;
+}
+a{color:inherit;text-decoration:none}
+a:focus-visible,button:focus-visible{outline:2px solid var(--copper);outline-offset:3px;border-radius:3px}
+h1,h2,h3,h4{font-family:var(--display);margin:0;line-height:1.15;text-wrap:balance;font-weight:600}
+p{margin:0}
+.wrap{width:min(1120px,100%);margin-inline:auto;padding-inline:clamp(16px,4vw,40px)}
+.eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--copper)}
+.mono{font-family:var(--mono)}
+
+/* ---------- nav ---------- */
+.nav{
+  position:sticky;top:env(safe-area-inset-top,0px);z-index:50;
+  background:color-mix(in srgb,var(--bg) 86%,transparent);
+  backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
+  border-bottom:1px solid var(--line-2);
+}
+.nav .wrap{display:flex;align-items:center;justify-content:space-between;gap:16px;height:64px}
+.brand{display:flex;align-items:center;gap:10px;font-family:var(--display);font-weight:700;font-size:18px;letter-spacing:-.01em}
+.brand svg{width:28px;height:28px;flex:none}
+.brand small{font-family:var(--mono);font-weight:400;font-size:11px;color:var(--ink-3);letter-spacing:.08em;display:none}
+@media(min-width:640px){.brand small{display:inline}}
+.menu{display:flex;gap:4px;list-style:none;margin:0;padding:0}
+.menu a{
+  display:block;padding:8px 12px;border-radius:6px;
+  font-family:var(--mono);font-size:12.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-2);
+  transition:color .15s,background .15s;
+}
+.menu a:hover{color:var(--ink);background:var(--surface-2)}
+.menu a.active{color:var(--copper);background:var(--copper-soft)}
+.menu-toggle{display:none;background:none;border:1px solid var(--line);border-radius:6px;padding:6px 8px;color:var(--ink);cursor:pointer}
+.menu-toggle svg{width:20px;height:20px;display:block}
+@media(max-width:720px){
+  .menu-toggle{display:block}
+  .menu{
+    position:absolute;left:0;right:0;top:64px;flex-direction:column;gap:0;
+    background:var(--surface);border-bottom:1px solid var(--line);padding:8px clamp(16px,4vw,40px) 12px;
+    box-shadow:var(--shadow);
+  }
+  .menu[hidden]{display:none}
+  .menu a{padding:12px 8px;border-radius:4px}
+}
+
+/* ---------- hero ---------- */
+.hero{position:relative;overflow:hidden;border-bottom:1px solid var(--line-2);
+  background:
+    linear-gradient(to right,var(--grid) 1px,transparent 1px) 0 0/48px 48px,
+    linear-gradient(to bottom,var(--grid) 1px,transparent 1px) 0 0/48px 48px,
+    var(--surface);
+}
+.hero .wrap{position:relative;display:grid;gap:28px;padding-block:clamp(48px,8vw,88px) clamp(36px,6vw,64px)}
+@media(min-width:900px){.hero .wrap{grid-template-columns:1.1fr .9fr;align-items:end}}
+.hero h1{font-size:clamp(34px,5.2vw,58px);font-weight:700;letter-spacing:-.025em;line-height:1.05;margin-top:12px}
+.hero h1 span{color:var(--copper)}
+.hero .sub{margin-top:16px;font-size:clamp(15px,1.4vw,18px);color:var(--ink-2);max-width:56ch}
+.hero .kr{margin-top:6px;font-family:var(--display);font-size:15px;color:var(--ink-3)}
+.hero-stats{display:flex;flex-wrap:wrap;gap:24px 36px;margin-top:32px}
+.stat{display:grid;gap:2px}
+.stat b{font-family:var(--display);font-size:26px;font-weight:600;letter-spacing:-.02em;font-variant-numeric:tabular-nums}
+.stat span{font-family:var(--mono);font-size:11.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-3)}
+.scope{
+  position:relative;background:var(--bg);border:1px solid var(--line);border-radius:10px;
+  box-shadow:var(--shadow);overflow:hidden;aspect-ratio:16/10;max-width:100%;
+}
+.scope canvas{display:block;width:100%;height:100%}
+.scope .tag{position:absolute;left:12px;top:10px;font-family:var(--mono);font-size:11px;color:var(--ink-3);letter-spacing:.06em}
+.scope .legend{position:absolute;right:12px;bottom:10px;display:flex;gap:14px;font-family:var(--mono);font-size:11px;color:var(--ink-3)}
+.legend i{display:inline-block;width:14px;height:2px;vertical-align:middle;margin-right:6px;border-radius:1px}
+
+/* ---------- sections ---------- */
+.section{padding-block:clamp(56px,7vw,88px);border-bottom:1px solid var(--line-2)}
+.section:last-of-type{border-bottom:0}
+.sec-head{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:end;gap:12px 32px;margin-bottom:clamp(28px,4vw,44px)}
+.sec-head h2{font-size:clamp(26px,3vw,36px);letter-spacing:-.02em;margin-top:8px}
+.sec-head p{color:var(--ink-2);max-width:52ch}
+
+/* notice */
+.notice{display:grid;gap:24px}
+@media(min-width:880px){.notice{grid-template-columns:1.25fr .75fr}}
+.notice-card{
+  background:var(--surface);border:1px solid var(--line);border-left:4px solid var(--copper);border-radius:10px;
+  padding:clamp(22px,3vw,32px);display:grid;gap:14px;
+}
+.notice-card h3{font-size:20px}
+.notice-card p{font-family:var(--body);font-size:16.5px;line-height:1.8;color:var(--ink-2);max-width:62ch;word-break:keep-all}
+.contact{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:clamp(22px,3vw,28px);display:grid;gap:14px;align-content:start}
+.contact dl{margin:0;display:grid;grid-template-columns:auto 1fr;gap:10px 16px;font-size:15px}
+.contact dt{font-family:var(--mono);font-size:11.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-3);padding-top:3px}
+.contact dd{margin:0;color:var(--ink)}
+.contact dd a{color:var(--steel);border-bottom:1px solid transparent}
+.contact dd a:hover{border-bottom-color:var(--steel)}
+.btn{
+  display:inline-flex;align-items:center;gap:8px;justify-self:start;
+  background:var(--copper);color:#fff;font-family:var(--mono);font-size:12.5px;letter-spacing:.08em;text-transform:uppercase;
+  padding:11px 16px;border-radius:6px;transition:filter .15s;
+}
+.btn:hover{filter:brightness(1.08)}
+.btn svg{width:16px;height:16px}
+
+/* members */
+.prof{display:grid;gap:28px;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:clamp(22px,3vw,36px)}
+@media(min-width:840px){.prof{grid-template-columns:260px 1fr}}
+.prof-id{display:grid;gap:14px;align-content:start}
+.portrait{
+  aspect-ratio:4/5;width:100%;max-width:260px;border-radius:10px;
+  background:
+    radial-gradient(circle at 50% 38%,var(--steel-soft) 0 24%,transparent 25%),
+    radial-gradient(ellipse at 50% 92%,var(--steel-soft) 0 40%,transparent 41%),
+    var(--surface-2);
+  border:1px solid var(--line);display:grid;place-items:end center;padding:12px;
+}
+.portrait span{font-family:var(--mono);font-size:11px;color:var(--ink-3);letter-spacing:.06em}
+.prof-id h3{font-size:24px;letter-spacing:-.01em}
+.prof-id .role{color:var(--ink-2);font-size:15px}
+.prof-id .links{display:grid;gap:6px;font-size:14.5px}
+.prof-id .links a{color:var(--steel);display:inline-flex;gap:8px;align-items:center}
+.prof-id .links svg{width:15px;height:15px;color:var(--ink-3)}
+.cv{display:grid;gap:28px}
+@media(min-width:1000px){.cv{grid-template-columns:1fr 1fr}}
+.cv h4{font-family:var(--mono);font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--copper);font-weight:500;margin-bottom:14px}
+.timeline{list-style:none;margin:0;padding:0;display:grid;gap:0;border-left:2px solid var(--line)}
+.timeline li{position:relative;padding:0 0 18px 20px}
+.timeline li:last-child{padding-bottom:0}
+.timeline li::before{content:"";position:absolute;left:-7px;top:7px;width:10px;height:10px;border-radius:50%;background:var(--surface);border:2px solid var(--copper)}
+.timeline .when{font-family:var(--mono);font-size:12.5px;color:var(--ink-3);font-variant-numeric:tabular-nums}
+.timeline .what{font-weight:500;margin-top:2px}
+.timeline .where{color:var(--ink-2);font-size:14.5px}
+.members-sub{margin-top:44px;display:flex;align-items:baseline;justify-content:space-between;gap:16px;flex-wrap:wrap}
+.members-sub h3{font-size:22px}
+.members-sub p{color:var(--ink-3);font-family:var(--mono);font-size:12.5px}
+.grid-3{display:grid;gap:16px;margin-top:20px;grid-template-columns:repeat(auto-fill,minmax(260px,1fr))}
+.member{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:20px;display:grid;grid-template-columns:52px 1fr;gap:16px;align-items:start}
+.avatar{
+  width:52px;height:52px;border-radius:50%;display:grid;place-items:center;
+  background:var(--steel-soft);color:var(--steel);font-family:var(--display);font-weight:600;font-size:16px;
+}
+.member h4{font-size:17px;font-weight:600}
+.member h4 small{font-family:var(--body);font-weight:400;color:var(--ink-3);font-size:13.5px;margin-left:6px}
+.member .deg{font-family:var(--mono);font-size:11.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--copper);margin-top:2px}
+.member .topic{color:var(--ink-2);font-size:14.5px;margin-top:8px}
+.member .topic.tbd{color:var(--ink-3);font-style:italic}
+.member a{display:block;font-size:13.5px;color:var(--steel);margin-top:8px;word-break:break-all}
+
+/* research */
+.areas{display:grid;gap:16px;grid-template-columns:repeat(auto-fit,minmax(240px,1fr))}
+@media(min-width:1000px){
+  .areas{grid-template-columns:repeat(6,1fr)}
+  .areas .area{grid-column:span 2}
+  .areas .area:nth-child(n+4){grid-column:span 3}
+}
+.area{
+  background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:24px;display:grid;gap:14px;align-content:start;
+  transition:transform .2s,box-shadow .2s;
+}
+.area:hover{transform:translateY(-2px);box-shadow:var(--shadow)}
+@media(prefers-reduced-motion:reduce){.area,.area:hover{transform:none;transition:none}}
+.area .ico{width:44px;height:44px;border-radius:8px;background:var(--copper-soft);color:var(--copper);display:grid;place-items:center}
+.area .ico svg{width:24px;height:24px}
+.area h3{font-size:18px}
+.area p{color:var(--ink-2);font-size:15px;line-height:1.6}
+.area .kw{display:flex;flex-wrap:wrap;gap:6px;margin-top:2px}
+.kw span{font-family:var(--mono);font-size:11px;padding:3px 8px;border-radius:4px;background:var(--surface-2);color:var(--ink-2)}
+
+/* publications */
+.filters{display:flex;flex-wrap:wrap;gap:8px}
+.filters button{
+  font-family:var(--mono);font-size:12px;letter-spacing:.06em;text-transform:uppercase;
+  background:var(--surface);border:1px solid var(--line);color:var(--ink-2);padding:8px 14px;border-radius:999px;cursor:pointer;
+  display:inline-flex;gap:8px;align-items:center;transition:background .15s,color .15s,border-color .15s;
+}
+.filters button b{font-weight:500;color:var(--ink-3);font-variant-numeric:tabular-nums}
+.filters button:hover{border-color:var(--ink-3)}
+.filters button[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.filters button[aria-pressed="true"] b{color:var(--bg);opacity:.7}
+.pub-group{margin-top:36px}
+.pub-group:first-of-type{margin-top:0}
+.pub-group h3{font-size:14px;font-family:var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--copper);font-weight:500;padding-bottom:12px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between}
+.pub-group h3 span{color:var(--ink-3)}
+.pubs{list-style:none;margin:0;padding:0}
+.pub{display:grid;grid-template-columns:52px 1fr;gap:12px;padding:16px 0;border-bottom:1px solid var(--line-2);font-size:15px;line-height:1.55}
+.pub:last-child{border-bottom:0}
+.pub .num{font-family:var(--mono);font-size:13px;color:var(--ink-3);padding-top:2px;font-variant-numeric:tabular-nums}
+.pub .au{color:var(--ink-2)}
+.pub .au b{color:var(--ink);font-weight:600}
+.pub .ti{font-weight:500;display:block;margin:2px 0}
+.pub .ve{color:var(--ink-2);font-size:14.5px}
+.pub .ve i{font-style:italic}
+.pub .yr{font-family:var(--mono);font-size:12px;color:var(--copper);margin-left:8px}
+.pub-note{margin-top:20px;font-size:13px;color:var(--ink-3)}
+
+/* projects */
+.proj-wrap{overflow-x:auto;border:1px solid var(--line);border-radius:10px;background:var(--surface)}
+table{border-collapse:collapse;width:100%;min-width:720px;font-size:15px}
+thead th{
+  text-align:left;font-family:var(--mono);font-size:11.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3);font-weight:500;
+  padding:14px 18px;border-bottom:1px solid var(--line);background:var(--surface-2);
+}
+tbody td{padding:16px 18px;border-bottom:1px solid var(--line-2);vertical-align:top}
+tbody tr:last-child td{border-bottom:0}
+td.t{font-weight:500;line-height:1.5}
+td.s{color:var(--ink-2);white-space:nowrap}
+td.p{font-family:var(--mono);font-size:13px;color:var(--ink-2);white-space:nowrap;font-variant-numeric:tabular-nums}
+.pill{display:inline-block;font-family:var(--mono);font-size:11px;letter-spacing:.06em;padding:3px 9px;border-radius:999px;background:var(--surface-2);color:var(--ink-2)}
+.pill.on{background:var(--steel-soft);color:var(--steel)}
+
+/* footer */
+footer{background:var(--surface);border-top:1px solid var(--line)}
+footer .wrap{display:grid;gap:24px;padding-block:40px 32px}
+@media(min-width:800px){footer .wrap{grid-template-columns:1.2fr .8fr}}
+footer .addr{color:var(--ink-2);font-size:14.5px;line-height:1.7;max-width:52ch}
+footer .fine{display:flex;flex-wrap:wrap;gap:8px 20px;font-family:var(--mono);font-size:12px;color:var(--ink-3);grid-column:1/-1;border-top:1px solid var(--line-2);padding-top:18px}
+footer .fine a{color:var(--steel)}
+.flinks{display:grid;gap:8px;font-size:14.5px;align-content:start}
+.flinks a{color:var(--steel);display:inline-flex;gap:8px;align-items:center}
+.flinks svg{width:15px;height:15px;color:var(--ink-3)}
+</style>
+</head>
+<body>
+<header class="nav">
+  <div class="wrap">
+    <a class="brand" href="#home" aria-label="PELab home">
+      <svg viewBox="0 0 28 28" fill="none" aria-hidden="true">
+        <rect x="1.5" y="1.5" width="25" height="25" rx="5" stroke="var(--copper)" stroke-width="1.6"/>
+        <path d="M5 17.5h4l2.5-8 3 12 2.5-8h6" stroke="var(--copper)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      PELab <small>KOREATECH</small>
+    </a>
+    <button class="menu-toggle" id="menuToggle" aria-expanded="false" aria-controls="menu" aria-label="Open menu">
+      <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 5h14M3 10h14M3 15h14"/></svg>
+    </button>
+    <nav aria-label="Primary">
+      <ul class="menu" id="menu">
+        <li><a href="#home" data-nav>Home</a></li>
+        <li><a href="#members" data-nav>Members</a></li>
+        <li><a href="#research" data-nav>Research</a></li>
+        <li><a href="#publication" data-nav>Publication</a></li>
+        <li><a href="#project" data-nav>Project</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<main>
+<!-- ================= HOME ================= -->
+<section class="hero" id="home">
+  <div class="wrap">
+    <div>
+      <div class="eyebrow">School of Electrical, Electronics &amp; Communication Engineering</div>
+      <h1>Koreatech<br>Power Electronics <span>Lab</span></h1>
+      <p class="sub">High-efficiency, high-density power conversion for data centers, electric vehicles, aerospace, defense, and wireless power transfer — from MHz resonant converters to server-rack power architectures.</p>
+      <p class="kr">한국기술교육대학교 전력전자연구실</p>
+      <div class="hero-stats" aria-label="At a glance">
+        <div class="stat"><b>5</b><span>Research areas</span></div>
+        <div class="stat"><b>23</b><span>Publications</span></div>
+        <div class="stat"><b>7</b><span>Sponsored projects</span></div>
+        <div class="stat"><b>F310</b><span>Eng. Bldg. #1</span></div>
+      </div>
+    </div>
+    <div class="scope" aria-hidden="true">
+      <canvas id="scope"></canvas>
+      <div class="tag">RESONANT TANK · v_gs / i_Lr</div>
+      <div class="legend"><span><i style="background:var(--steel)"></i>v_gs</span><span><i style="background:var(--copper)"></i>i_Lr</span></div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="notice">
+  <div class="wrap">
+    <div class="notice">
+      <div class="notice-card">
+        <div class="eyebrow">Notice · 연구실 모집</div>
+        <h3>함께 연구하고 함께 성장할 학생을 찾습니다</h3>
+        <p>전력전자와 아날로그 회로 분야에 관심이 있는 열정적인 학생분들을 모집합니다. 연구실에서 함께 연구하고 함께 성장할 학생들의 연락을 기다립니다. 석박사 학위과정 및 학부연구생에 관심 있으신 학생께서는 간단한 자기소개, CV 등을 첨부하여 아래 주소로 메일 보내주세요.</p>
+        <a class="btn" href="mailto:dm@koreatech.ac.kr?subject=%5BPELab%5D%20%EC%97%B0%EA%B5%AC%EC%8B%A4%20%EC%A7%80%EC%9B%90%20%EB%AC%B8%EC%9D%98">
+          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="1.5" y="3" width="13" height="10" rx="1.5"/><path d="m2 4 6 5 6-5"/></svg>
+          dm@koreatech.ac.kr
+        </a>
+      </div>
+      <div class="contact">
+        <div class="eyebrow">Contact</div>
+        <dl>
+          <dt>Lab</dt><dd>한국기술교육대학교 전력전자연구실</dd>
+          <dt>PI</dt><dd>전기·전자·통신공학부 김동민 교수</dd>
+          <dt>Email</dt><dd><a href="mailto:dm@koreatech.ac.kr">dm@koreatech.ac.kr</a></dd>
+          <dt>Phone</dt><dd><a href="tel:+82415601614">+82-41-560-1614</a></dd>
+          <dt>Office</dt><dd>Room F310, Engineering Bldg. #1<br>Korea University of Technology and Education</dd>
+        </dl>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= MEMBERS ================= -->
+<section class="section" id="members">
+  <div class="wrap">
+    <div class="sec-head">
+      <div>
+        <div class="eyebrow">Members</div>
+        <h2>People</h2>
+      </div>
+      <p>A young lab, founded in 2026, led by one PI and a first cohort of undergraduate researchers.</p>
+    </div>
+
+    <article class="prof">
+      <div class="prof-id">
+        <div class="portrait"><span>PHOTO · 김동민 교수</span></div>
+        <div>
+          <div class="eyebrow">Professor</div>
+          <h3>Dongmin Kim, Ph.D.</h3>
+          <p class="role">Assistant Professor<br>Korea University of Technology &amp; Education</p>
+        </div>
+        <div class="links">
+          <a href="mailto:dm@koreatech.ac.kr"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="1.5" y="3" width="13" height="10" rx="1.5"/><path d="m2 4 6 5 6-5"/></svg>dm@koreatech.ac.kr</a>
+          <a href="tel:+82415601614"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 2h3l1.5 3.5-2 1.2a7 7 0 0 0 3.8 3.8l1.2-2L14 10v3a1 1 0 0 1-1 1A11 11 0 0 1 2 3a1 1 0 0 1 1-1Z"/></svg>+82-41-560-1614</a>
+          <a href="#notice"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M8 14s5-4 5-8A5 5 0 0 0 3 6c0 4 5 8 5 8Z"/><circle cx="8" cy="6" r="1.7"/></svg>Room F310, Eng. Bldg. #1</a>
+        </div>
+      </div>
+      <div class="cv">
+        <div>
+          <h4>Education</h4>
+          <ol class="timeline">
+            <li><div class="when">2020 – 2024</div><div class="what">Ph.D. in Electrical Engineering</div><div class="where">KAIST · Advisor: Prof. Gun-Woo Moon</div></li>
+            <li><div class="when">2018 – 2020</div><div class="what">M.S. in Electrical Engineering</div><div class="where">KAIST · Advisor: Prof. Gun-Woo Moon</div></li>
+            <li><div class="when">2014 – 2018</div><div class="what">B.S. in Electronics &amp; Electrical Engineering</div><div class="where">Sungkyunkwan University (SKKU)</div></li>
+          </ol>
+        </div>
+        <div>
+          <h4>Appointments</h4>
+          <ol class="timeline">
+            <li><div class="when">2026 – Present</div><div class="what">Assistant Professor</div><div class="where">Korea University of Technology &amp; Education</div></li>
+            <li><div class="when">2024 – 2026</div><div class="what">Research Scientist</div><div class="where">ETRI (Electronics and Telecommunications Research Institute)</div></li>
+          </ol>
+        </div>
+      </div>
+    </article>
+
+    <div class="members-sub">
+      <h3>Researchers</h3>
+      <p>3 undergraduate researchers</p>
+    </div>
+    <div class="grid-3">
+      <div class="member">
+        <div class="avatar" aria-hidden="true">백</div>
+        <div>
+          <h4>백선우 <small>Seonwoo Baek</small></h4>
+          <div class="deg">Undergraduate researcher</div>
+          <p class="topic">DC/DC converter · Wireless power transfer</p>
+          <a href="mailto:tjsdn25@koreatech.ac.kr">tjsdn25@koreatech.ac.kr</a>
+        </div>
+      </div>
+      <div class="member">
+        <div class="avatar" aria-hidden="true">조</div>
+        <div>
+          <h4>조창근 <small>Chang-geun Cho</small></h4>
+          <div class="deg">Undergraduate researcher</div>
+          <p class="topic tbd">Research topic TBD</p>
+          <a href="mailto:ckdrms2455@koreatech.ac.kr">ckdrms2455@koreatech.ac.kr</a>
+        </div>
+      </div>
+      <div class="member">
+        <div class="avatar" aria-hidden="true">한</div>
+        <div>
+          <h4>한재상 <small>Jae-sang Han</small></h4>
+          <div class="deg">Undergraduate researcher</div>
+          <p class="topic tbd">Research topic TBD</p>
+          <a href="mailto:js032129@koreatech.ac.kr">js032129@koreatech.ac.kr</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= RESEARCH ================= -->
+<section class="section" id="research">
+  <div class="wrap">
+    <div class="sec-head">
+      <div>
+        <div class="eyebrow">Research</div>
+        <h2>Research Areas</h2>
+      </div>
+      <p>Power conversion where efficiency, density and reliability are all non-negotiable.</p>
+    </div>
+    <div class="areas">
+      <article class="area">
+        <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="5" rx="1"/><rect x="3" y="10" width="18" height="5" rx="1"/><rect x="3" y="16" width="18" height="5" rx="1"/><path d="M7 6.5h.01M7 12.5h.01M7 18.5h.01"/></svg></div>
+        <h3>Datacenter</h3>
+        <p>Advanced power electronics for high-efficiency, high-density, and reliable data center energy systems.</p>
+        <div class="kw"><span>Titanium 1U PSU</span><span>Liquid cooling</span><span>Bridgeless PFC</span></div>
+      </article>
+      <article class="area">
+        <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 13l2-5h12l3 5v4H3z"/><circle cx="7.5" cy="17" r="1.8"/><circle cx="16.5" cy="17" r="1.8"/><path d="M12 8v5M9 3l3-1 3 1"/></svg></div>
+        <h3>Electric Vehicle</h3>
+        <p>Innovative power conversion and charging technologies for efficient and sustainable electric vehicles.</p>
+        <div class="kw"><span>LDC</span><span>Bidirectional APM</span><span>Wide input range</span></div>
+      </article>
+      <article class="area">
+        <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3c1.5 2.5 2 5 2 8l6 4v2l-6-1.5v3l2 1.5V21l-4-1-4 1v-1l2-1.5v-3L4 17v-2l6-4c0-3 .5-5.5 2-8Z"/></svg></div>
+        <h3>Aerospace</h3>
+        <p>Lightweight and high-reliability power electronics for aerospace propulsion and onboard energy systems.</p>
+        <div class="kw"><span>High power density</span><span>Reliability</span></div>
+      </article>
+      <article class="area">
+        <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3 4 6v6c0 4.5 3.5 8 8 9 4.5-1 8-4.5 8-9V6l-8-3Z"/><path d="m9 12 2 2 4-4"/></svg></div>
+        <h3>Military &amp; Defense</h3>
+        <p>Ruggedized power electronic systems for defense applications requiring high reliability and resilience.</p>
+        <div class="kw"><span>HV pulse generator</span><span>Multi-channel sync</span></div>
+      </article>
+      <article class="area">
+        <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20V10"/><circle cx="12" cy="8" r="1.4"/><path d="M8.5 4.5a5 5 0 0 1 7 0M6 2a8.5 8.5 0 0 1 12 0M8.5 11.5a5 5 0 0 0 7 0"/></svg></div>
+        <h3>Wireless Power Transfer</h3>
+        <p>Advanced wireless power transfer technologies for stable, efficient, and flexible energy delivery systems.</p>
+        <div class="kw"><span>MHz Class E / Φ2</span><span>Dual-band rectifier</span><span>Rx integration</span></div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ================= PUBLICATION ================= -->
+<section class="section" id="publication">
+  <div class="wrap">
+    <div class="sec-head">
+      <div>
+        <div class="eyebrow">Publication</div>
+        <h2>Publications</h2>
+      </div>
+      <div class="filters" role="group" aria-label="Filter publications">
+        <button type="button" data-filter="all" aria-pressed="true">All <b>23</b></button>
+        <button type="button" data-filter="journal" aria-pressed="false">Journal <b>5</b></button>
+        <button type="button" data-filter="intl" aria-pressed="false">Int'l Conf. <b>11</b></button>
+        <button type="button" data-filter="dom" aria-pressed="false">Domestic Conf. <b>7</b></button>
+      </div>
+    </div>
+
+    <div class="pub-group" data-group="journal">
+      <h3>Journal Articles <span>[1]–[5]</span></h3>
+      <ol class="pubs">
+        <li class="pub"><span class="num">[1]</span><div><span class="au">Chang-Yeob Chu*, <b>Dongmin Kim</b>*, Youngseok Lee, Ki-bum Park</span><span class="ti">Series-Stacked Class E Inverter with Topology Morphing Strategy for Enhanced Light-Load Efficiency in MHz WPT System</span><span class="ve"><i>IEEE Trans. Ind. Electron.</i>, Early Access<span class="yr">2026</span></span></div></li>
+        <li class="pub"><span class="num">[2]</span><div><span class="au"><b>Dongmin Kim</b>, Jongyoon Chae, Ki-Bum Park, Gun-Woo Moon</span><span class="ti">Dual-Band Rectifier Using Coupled Inductor for Wireless Charging System Receivers</span><span class="ve"><i>IEEE Trans. Power Electron.</i>, vol. 40, no. 5, pp. 7488–7499<span class="yr">May 2025</span></span></div></li>
+        <li class="pub"><span class="num">[3]</span><div><span class="au">Jongyoon Chae, Minsu Lee, <b>Dongmin Kim</b>, Gun-Woo Moon</span><span class="ti">New Gate Control Method of PWM Resonant Converters for Near-Zero-Ripple Fuel Cell Current</span><span class="ve"><i>IEEE Trans. Power Electron.</i>, vol. 39, no. 5, pp. 4974–4980<span class="yr">May 2024</span></span></div></li>
+        <li class="pub"><span class="num">[4]</span><div><span class="au"><b>Dongmin Kim</b>, Jongyoon Chae, Ki-Bum Park, Gun-Woo Moon</span><span class="ti">A Self-Oscillated Feedback Network for Push–Pull Resonant Power Converters</span><span class="ve"><i>IEEE Trans. Power Electron.</i>, vol. 38, no. 11, pp. 14249–14261<span class="yr">Nov 2023</span></span></div></li>
+        <li class="pub"><span class="num">[5]</span><div><span class="au">Young-Dal Lee, <b>Dongmin Kim</b>, Seung-Hyun Choi, Gun-Woo Moon, Chong-Eun Kim</span><span class="ti">New Bridgeless Power Factor Correction Converter with Simple Gate Driving Circuit and High Efficiency for Server Power Applications</span><span class="ve"><i>IEEE Trans. Power Electron.</i>, vol. 35, no. 12, pp. 13148–13156<span class="yr">Dec 2020</span></span></div></li>
+      </ol>
+    </div>
+
+    <div class="pub-group" data-group="intl">
+      <h3>International Conferences <span>[6]–[16]</span></h3>
+      <ol class="pubs">
+        <li class="pub"><span class="num">[6]</span><div><span class="au">Jongyoon Chae*, <b>Dongmin Kim</b>*, Dongmin Choi, Gun-Woo Moon</span><span class="ti">New Reverse Mode Control Method of Phase-Shift Full-Bridge Converter for Bidirectional Auxiliary Power Module</span><span class="ve">in <i>Proc. IEEE Appl. Power Electron. Conf. Expo. (APEC)</i>, pp. 1899–1904<span class="yr">Mar 2025</span></span></div></li>
+        <li class="pub"><span class="num">[7]</span><div><span class="au"><b>Dongmin Kim</b>, Young-Dal Lee, Sungmoon Cheon, Ki-Mok Kim, Gun-Woo Moon</span><span class="ti">Push-Pull Class Φ2 Amplifier with Optimized Operation Strategy for High-frequency Wireless Power Transfer System</span><span class="ve">in <i>Proc. ECCE Asia</i>, pp. 171–176<span class="yr">2021</span></span></div></li>
+        <li class="pub"><span class="num">[8]</span><div><span class="au"><b>Dongmin Kim</b>, Chong-Eun Kim, Young-Dal Lee, Sungmoon Cheon, Gun-Woo Moon</span><span class="ti">Active Clamp Forward Converter with Light-load Efficiency Optimization Control Strategy</span><span class="ve">in <i>Proc. ECCE Asia</i>, pp. 2093–2098<span class="yr">2020</span></span></div></li>
+        <li class="pub"><span class="num">[9]</span><div><span class="au">Jongyoon Chae, Minsu Lee, Jae Ho Kim, <b>Dongmin Kim</b>, Gun-Woo Moon</span><span class="ti">A Simple Gate Control Method for Output Voltage Balancing in Input-Parallel Output-Series Boost Converter</span><span class="ve">in <i>Proc. ECCE Asia</i>, pp. 498–503<span class="yr">2023</span></span></div></li>
+        <li class="pub"><span class="num">[10]</span><div><span class="au">Dongmin Choi, Minsu Lee, Taewoo Kim, <b>Dongmin Kim</b>, Gun-Woo Moon</span><span class="ti">A Dual-Active-Bridge (DAB) Converter Based Bidirectional DC/DC Converter with Reduced Link Capacitance</span><span class="ve">in <i>Proc. ECCE Asia</i>, pp. 1386–1389<span class="yr">2022</span></span></div></li>
+        <li class="pub"><span class="num">[11]</span><div><span class="au">Dongmin Choi, Minsu Lee, <b>Dongmin Kim</b>, Kyung-Hwa Park, Gun-Woo Moon</span><span class="ti">A High Efficiency Asymmetrical Half-Bridge Converter with an Improved Coupled Inductor Rectifier</span><span class="ve">in <i>Proc. ECCE Asia</i>, pp. 1964–1969<span class="yr">2021</span></span></div></li>
+        <li class="pub"><span class="num">[12]</span><div><span class="au">Moo-Hyun Park, Yeonho Jeong, Dongmin Choi, <b>Dong-min Kim</b>, Gun-Woo Moon</span><span class="ti">Hold-up Time Extension Method in LLC Converter by Detecting Operation Region</span><span class="ve">in <i>Proc. ECCE Asia</i>, pp. 1706–1709<span class="yr">2020</span></span></div></li>
+        <li class="pub"><span class="num">[13]</span><div><span class="au">Young-Dal Lee, <b>Dongmin Kim</b>, Chong-Eun Kim, Gun-Woo Moon</span><span class="ti">A New Receiver-Side Integrated Regulator With Phase Shift Control Strategy For Wireless Power Transfer System</span><span class="ve">in <i>Proc. WoW</i>, pp. 112–115<span class="yr">2020</span></span></div></li>
+        <li class="pub"><span class="num">[14]</span><div><span class="au">Cheon-young Lim, Ki-mok Kim, <b>Dongmin Kim</b>, Tae-Woo Kim, Gun-Woo Moon</span><span class="ti">Hybrid DC-DC Converter Using Center-Tapped Clamp Circuit in Wide Range of High Output Voltage</span><span class="ve">in <i>Proc. ECCE Asia</i>, pp. 1921–1926<span class="yr">2019</span></span></div></li>
+        <li class="pub"><span class="num">[15]</span><div><span class="au">Young-Dal Lee, Chong-Eun Kim, <b>Dongmin Kim</b>, Seung-Hyun Choi, Gun-Woo Moon</span><span class="ti">A New Bridgeless PFC Converter having Low Common-Mode Noise and High Efficiency for Server Power Application</span><span class="ve">in <i>Proc. ECCE Asia</i>, pp. 440–445<span class="yr">2019</span></span></div></li>
+        <li class="pub"><span class="num">[16]</span><div><span class="au">Jung-Kyu Han, Keon-Woo Kim, Cheon-Yong Lim, <b>Dongmin Kim</b>, Gun-Woo Moon</span><span class="ti">A New Full-Bridge Converter with Phase-Shifted Coupled Inductor Rectifier</span><span class="ve">in <i>Proc. ECCE Asia</i>, pp. 2874–2879<span class="yr">2019</span></span></div></li>
+      </ol>
+    </div>
+
+    <div class="pub-group" data-group="dom">
+      <h3>Domestic Conferences <span>[17]–[23]</span></h3>
+      <ol class="pubs">
+        <li class="pub"><span class="num">[17]</span><div><span class="au"><b>Dongmin Kim</b>, Dongmin Choi, Jongyoon Chae, Juyeon Sim, Joon-Su Kim, Gun-Woo Moon</span><span class="ti">Optimal Driving Scheme for Reverse Operation of Bidirectional Phase-Shift Full-Bridge Converter</span><span class="ve"><i>Power Electronics Annual Conference</i>, pp. 125–127<span class="yr">2020</span></span></div></li>
+        <li class="pub"><span class="num">[18]</span><div><span class="au"><b>Dongmin Kim</b>, Sungmoon Cheon, Gun-Woo Moon</span><span class="ti">Push-Pull Class-Φ Inverter with Optimized Operation Strategy for High-frequency Wireless Power Transfer System</span><span class="ve"><i>Power Electronics Annual Conference</i>, pp. 130–132<span class="yr">2021</span></span></div></li>
+        <li class="pub"><span class="num">[19]</span><div><span class="au"><b>Dongmin Kim</b>, Young-Dal Lee, Chong-Eun Kim, Gun-Woo Moon</span><span class="ti">Light-load Efficiency Optimization Control Strategy for Active Clamp Forward Converter</span><span class="ve"><i>Power Electronics Annual Conference</i>, pp. 142–144<span class="yr">2020</span></span></div></li>
+        <li class="pub"><span class="num">[20]</span><div><span class="au"><b>Dongmin Kim</b>, Jong-Kuk Lee, So-Young Kim, Tae-Won Noh, Jae-Hyung Lee, Byung-Kuk Lee</span><span class="ti">Differential Voltage Curve Estimation Algorithm for online SOH Estimation</span><span class="ve"><i>Power Electronics Annual Conference</i>, pp. 77–78<span class="yr">2017</span></span></div></li>
+        <li class="pub"><span class="num">[21]</span><div><span class="au">Jae-Sang Kim, <b>Dongmin Kim</b>, Taewoo Kim, Jaeho Kim, Gun-Woo Moon</span><span class="ti">A New High-Power Density Tailored Waveform Modulator for Plasma Processing</span><span class="ve"><i>Power Electronics Annual Conference</i>, pp. 168–170<span class="yr">2020</span></span></div></li>
+        <li class="pub"><span class="num">[22]</span><div><span class="au">Dongmin Choi, Minsu Lee, <b>Dongmin Kim</b>, Gun-Woo Moon</span><span class="ti">Asymmetrical Half-Bridge Converter with an Improved Coupled Inductor Rectifier for High Efficiency under Light-Load Condition</span><span class="ve"><i>Power Electronics Annual Conference</i>, pp. 46–48<span class="yr">2021</span></span></div></li>
+        <li class="pub"><span class="num">[23]</span><div><span class="au">Young-Dal Lee, Chong-Eun Kim, <b>Dongmin Kim</b>, Seung-Hyun Choi, Gun-Woo Moon</span><span class="ti">A New Bridgeless PFC Converter With Simple Gate Driving Circuit And High Efficiency for Server Power Application</span><span class="ve"><i>Power Electronics Annual Conference</i>, pp. 92–94<span class="yr">2019</span></span></div></li>
+      </ol>
+    </div>
+    <p class="pub-note">* Co-first authors.</p>
+  </div>
+</section>
+
+<!-- ================= PROJECT ================= -->
+<section class="section" id="project">
+  <div class="wrap">
+    <div class="sec-head">
+      <div>
+        <div class="eyebrow">Project</div>
+        <h2>Sponsored Projects</h2>
+      </div>
+      <p>Industry and government-funded research, from server power architectures to wireless charging receivers.</p>
+    </div>
+    <div class="proj-wrap">
+      <table>
+        <thead><tr><th style="width:44px">No.</th><th>Project</th><th>Sponsor</th><th>Period</th></tr></thead>
+        <tbody>
+          <tr><td class="mono" style="color:var(--ink-3)">1</td><td class="t">Development of 2kW/1U Titanium Level Liquid Cooling Server Power Architecture</td><td class="s">Nvidia, Solu-M</td><td class="p">Aug 2023 – Dec 2024</td></tr>
+          <tr><td class="mono" style="color:var(--ink-3)">2</td><td class="t">Development of a High-Voltage Multi-Channel Synchronized Pulse Generator for Military Applications</td><td class="s">ADD</td><td class="p">Apr 2023 – Dec 2023</td></tr>
+          <tr><td class="mono" style="color:var(--ink-3)">3</td><td class="t">Development of a 3.6 kW Low Voltage DC/DC Converter with Wide Input Voltage Range</td><td class="s">LG Magna e-Powertrain</td><td class="p">Apr 2022 – Mar 2023</td></tr>
+          <tr><td class="mono" style="color:var(--ink-3)">4</td><td class="t">Research on High Power Density of Data Center Power Supply based on Next Generation Device</td><td class="s">National Research Foundation of Korea</td><td class="p">May 2022 – Aug 2024</td></tr>
+          <tr><td class="mono" style="color:var(--ink-3)">5</td><td class="t">Development of 3kW Titanium Level Liquid Cooling Server Power Architecture</td><td class="s">Intel, Solu-M</td><td class="p">Mar 2021 – May 2022</td></tr>
+          <tr><td class="mono" style="color:var(--ink-3)">6</td><td class="t">Research on the miniaturized receiver of the wireless power transmission system for high-power smart robots</td><td class="s">Samsung Electronics Co., Ltd.</td><td class="p">Apr 2019 – Dec 2019</td></tr>
+          <tr><td class="mono" style="color:var(--ink-3)">7</td><td class="t">Research on the new architecture for miniaturization of the wireless charging systems</td><td class="s">Samsung Electronics Co., Ltd.</td><td class="p">Jun 2018 – Dec 2018</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div>
+      <div class="brand" style="margin-bottom:12px">
+        <svg viewBox="0 0 28 28" fill="none" aria-hidden="true"><rect x="1.5" y="1.5" width="25" height="25" rx="5" stroke="var(--copper)" stroke-width="1.6"/><path d="M5 17.5h4l2.5-8 3 12 2.5-8h6" stroke="var(--copper)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        Koreatech Power Electronics Lab
+      </div>
+      <p class="addr">Room F310, Engineering Bldg. #1, Korea University of Technology and Education,<br>1600 Chungjeol-ro, Byeongcheon-myeon, Dongnam-gu, Cheonan-si, Chungcheongnam-do, Republic of Korea</p>
+    </div>
+    <div class="flinks">
+      <a href="mailto:dm@koreatech.ac.kr"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="1.5" y="3" width="13" height="10" rx="1.5"/><path d="m2 4 6 5 6-5"/></svg>dm@koreatech.ac.kr</a>
+      <a href="tel:+82415601614"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 2h3l1.5 3.5-2 1.2a7 7 0 0 0 3.8 3.8l1.2-2L14 10v3a1 1 0 0 1-1 1A11 11 0 0 1 2 3a1 1 0 0 1 1-1Z"/></svg>+82-41-560-1614</a>
+      <a href="https://maps.google.com/?q=Korea+University+of+Technology+and+Education+Engineering+Building+1" target="_blank" rel="noopener"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M8 14s5-4 5-8A5 5 0 0 0 3 6c0 4 5 8 5 8Z"/><circle cx="8" cy="6" r="1.7"/></svg>Open in Google Maps</a>
+      <a href="https://www.koreatech.ac.kr" target="_blank" rel="noopener"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="8" cy="8" r="6.5"/><path d="M1.5 8h13M8 1.5c2.5 2.5 2.5 10.5 0 13M8 1.5c-2.5 2.5-2.5 10.5 0 13"/></svg>koreatech.ac.kr</a>
+    </div>
+    <div class="fine">
+      <span>© 2026 Koreatech PELab</span>
+      <span>Created by Dongmin Kim</span>
+      <span>한국기술교육대학교 전력전자연구실</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+(function(){
+  /* ---- mobile menu ---- */
+  var toggle=document.getElementById('menuToggle'),menu=document.getElementById('menu');
+  function syncMenu(){ if(window.innerWidth>720){menu.hidden=false;toggle.setAttribute('aria-expanded','false');} else if(toggle.getAttribute('aria-expanded')!=='true'){menu.hidden=true;} }
+  toggle.addEventListener('click',function(){
+    var open=toggle.getAttribute('aria-expanded')==='true';
+    toggle.setAttribute('aria-expanded',String(!open)); menu.hidden=open;
+  });
+  menu.addEventListener('click',function(e){ if(e.target.tagName==='A'&&window.innerWidth<=720){menu.hidden=true;toggle.setAttribute('aria-expanded','false');} });
+  window.addEventListener('resize',syncMenu); syncMenu();
+
+  /* ---- active nav on scroll ---- */
+  var links=[].slice.call(document.querySelectorAll('[data-nav]'));
+  var targets=links.map(function(a){return document.querySelector(a.getAttribute('href'));});
+  var notice=document.getElementById('notice');
+  function setActive(){
+    var y=window.scrollY+90,idx=0;
+    targets.forEach(function(t,i){ if(t&&t.offsetTop<=y) idx=i; });
+    if(notice&&notice.offsetTop<=y&&targets[1].offsetTop>y) idx=0;
+    links.forEach(function(a,i){a.classList.toggle('active',i===idx);});
+  }
+  window.addEventListener('scroll',setActive,{passive:true}); setActive();
+
+  /* ---- publication filter ---- */
+  var btns=document.querySelectorAll('.filters button'),groups=document.querySelectorAll('.pub-group');
+  var KEY='pelab.pubfilter';
+  function applyFilter(f){
+    btns.forEach(function(b){b.setAttribute('aria-pressed',String(b.dataset.filter===f));});
+    groups.forEach(function(g){g.hidden=!(f==='all'||g.dataset.group===f);});
+    try{localStorage.setItem(KEY,f);}catch(e){}
+  }
+  btns.forEach(function(b){b.addEventListener('click',function(){applyFilter(b.dataset.filter);});});
+  var saved='all'; try{saved=localStorage.getItem(KEY)||'all';}catch(e){}
+  applyFilter(saved);
+
+  /* ---- hero oscilloscope: gate drive + resonant tank current ---- */
+  var cv=document.getElementById('scope'),ctx=cv.getContext('2d');
+  var reduce=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var W,H,dpr;
+  function size(){
+    dpr=Math.min(window.devicePixelRatio||1,2);
+    var r=cv.getBoundingClientRect(); W=Math.max(1,Math.floor(r.width)); H=Math.max(1,Math.floor(r.height));
+    cv.width=W*dpr; cv.height=H*dpr; ctx.setTransform(dpr,0,0,dpr,0,0);
+  }
+  function tok(n){return getComputedStyle(document.documentElement).getPropertyValue(n).trim();}
+  var t0=performance.now();
+  function draw(now){
+    var t=reduce?0:(now-t0)/1000;
+    var steel=tok('--steel'),copper=tok('--copper'),grid=tok('--line-2'),ink3=tok('--ink-3');
+    ctx.clearRect(0,0,W,H);
+    /* graticule */
+    ctx.strokeStyle=grid; ctx.lineWidth=1;
+    var gx=W/10,gy=H/8;
+    ctx.beginPath();
+    for(var i=1;i<10;i++){ctx.moveTo(i*gx+.5,0);ctx.lineTo(i*gx+.5,H);}
+    for(var j=1;j<8;j++){ctx.moveTo(0,j*gy+.5);ctx.lineTo(W,j*gy+.5);}
+    ctx.stroke();
+    ctx.strokeStyle=ink3; ctx.globalAlpha=.35;
+    ctx.beginPath(); ctx.moveTo(0,H/2+.5); ctx.lineTo(W,H/2+.5); ctx.stroke(); ctx.globalAlpha=1;
+
+    var periods=3, phase=t*0.9;
+    /* gate drive: 50% duty square wave */
+    ctx.strokeStyle=steel; ctx.lineWidth=1.6; ctx.beginPath();
+    var hi=H*0.22, lo=H*0.42;
+    for(var x=0;x<=W;x++){
+      var u=(x/W)*periods+phase/(2*Math.PI);
+      var s=(u%1)<0.5?hi:lo;
+      if(x===0)ctx.moveTo(x,s); else ctx.lineTo(x,s);
+    }
+    ctx.stroke();
+    /* resonant current: sine with gentle amplitude envelope (light-load morphing) */
+    var env=0.32+0.08*Math.sin(t*0.5);
+    ctx.strokeStyle=copper; ctx.lineWidth=2; ctx.beginPath();
+    for(var x2=0;x2<=W;x2++){
+      var th=(x2/W)*periods*2*Math.PI+phase;
+      var y=H*0.68 - Math.sin(th)*H*env*0.5;
+      if(x2===0)ctx.moveTo(x2,y); else ctx.lineTo(x2,y);
+    }
+    ctx.stroke();
+    /* ZVS marker dots at switching instants where i_Lr crosses zero */
+    ctx.fillStyle=copper;
+    for(var k=0;k<periods*2;k++){
+      var xs=((k*Math.PI-phase)/(periods*2*Math.PI))*W; while(xs<0)xs+=W/periods; xs=xs%W;
+      ctx.beginPath(); ctx.arc(xs,H*0.68,2.6,0,Math.PI*2); ctx.fill();
+    }
+    if(!reduce) requestAnimationFrame(draw);
+  }
+  size(); requestAnimationFrame(draw);
+  window.addEventListener('resize',function(){size(); if(reduce) draw(performance.now());});
+  if(window.matchMedia){
+    var mq=window.matchMedia('(prefers-color-scheme: dark)');
+    (mq.addEventListener?mq.addEventListener('change',function(){if(reduce)draw(performance.now());}):null);
+  }
+})();
+</script>
+
+</body>
+</html>
