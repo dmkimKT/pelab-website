@@ -7,8 +7,8 @@
   --ink-3:#7B8794;
   --line:#D3DAE2;
   --line-2:#E4E9EE;
-  --copper:#B5602A;
-  --copper-soft:#F3E3D6;
+  --copper:#5D5290;
+  --copper-soft:#E8E6F2;
   --steel:#2E5A86;
   --steel-soft:#DDE7F1;
   --trace3:#2E7D6B;
@@ -24,7 +24,7 @@
     --bg:#0E141C; --surface:#151D27; --surface-2:#1C2733;
     --ink:#E7ECF2; --ink-2:#AEBAC7; --ink-3:#7E8B99;
     --line:#2B3744; --line-2:#222D39;
-    --copper:#D98C55; --copper-soft:#3A2A1E;
+    --copper:#A79BD6; --copper-soft:#262338;
     --steel:#7FAAD6; --steel-soft:#1D2E41; --trace3:#6FBFA8;
     --grid:rgba(231,236,242,.06);
     --shadow:0 1px 2px rgba(0,0,0,.4),0 8px 24px -12px rgba(0,0,0,.6);
@@ -35,7 +35,7 @@
   --bg:#0E141C; --surface:#151D27; --surface-2:#1C2733;
   --ink:#E7ECF2; --ink-2:#AEBAC7; --ink-3:#7E8B99;
   --line:#2B3744; --line-2:#222D39;
-  --copper:#D98C55; --copper-soft:#3A2A1E;
+  --copper:#A79BD6; --copper-soft:#262338;
   --steel:#7FAAD6; --steel-soft:#1D2E41; --trace3:#6FBFA8;
   --grid:rgba(231,236,242,.06);
   --shadow:0 1px 2px rgba(0,0,0,.4),0 8px 24px -12px rgba(0,0,0,.6);
